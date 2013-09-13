@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Node.js 中文 API</title>
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap-theme.min.css">
+<style>
+#main-iframe {
+  width: 100%;
+  position: fixed;
+  top: 50px;
+  left: 0;
+  right: 0;
+  border: none;
+  background-color: #eee;
+}
+</style>
+</head>
+<body>
+  <div id="header">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="navbar-header">
+        <span class="navbar-brand" href="#">Node.js 中文 API</span>
+      </div>
+      <div class="collapse navbar-collapse navbar-ex5-collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="/api/" target="iframe">文档首页</a></li>
+          <li><a href="https://github.com/leizongmin/node-doc-cn" target="_blank">项目源码</a></li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  <iframe id="main-iframe" name="iframe" src="/api/"></iframe>
+</body>
+</html>
+<script src="/public/js/jquery.js"></script>
+<script src="/public/bootstrap/js/bootstrap.min.js"></script>
+<script>
+(function () {
+
+  // 自动调整iframe高度
+  var $w = $(window);
+  var $h = $('#header');
+  var $m = $('#main-iframe');
+  function windowResize () {
+    var h = $w.height() - $m.offset().top;
+    $m.height(h);
+  }
+  $(window).resize(windowResize);
+  windowResize();
+
+})();
+</script>
