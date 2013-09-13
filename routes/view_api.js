@@ -15,6 +15,7 @@ function resolveAPIPath (name) {
 
 // 读取文件内容
 function readAPIFile (name, callback) {
+  if (name === 'index') name = '_toc';
   if (name === 'all') {
     var filename = resolveAPIPath(name);
     fs.readFile(filename, 'utf8', function (err, content) {
@@ -62,7 +63,6 @@ module.exports = function (app) {
   app.get('/api/:name.:type', function (req, res, next) {
     var name = req.params.name;
     var type = req.params.type;
-    if (name === 'index') name = '_toc';
 
     readAPIFile(name, function (err, content, filename) {
       if (err) return next(err);
