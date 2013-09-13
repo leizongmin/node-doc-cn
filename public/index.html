@@ -13,7 +13,7 @@
   left: 0;
   right: 0;
   border: none;
-  background-color: #eee;
+  background-color: #f8f8f8;
 }
 </style>
 </head>
@@ -26,6 +26,7 @@
       <div class="collapse navbar-collapse navbar-ex5-collapse">
         <ul class="nav navbar-nav">
           <li><a href="/api/" target="iframe">文档首页</a></li>
+          <li><a href="#" onclick="translatePage()">翻译当前页面</a></li>
           <li><a href="https://github.com/leizongmin/node-doc-cn" target="_blank">项目源码</a></li>
         </ul>
       </div>
@@ -51,4 +52,11 @@
   windowResize();
 
 })();
+
+// 翻译当前页面
+function translatePage () {
+  var name = $('#main-iframe')[0].contentWindow.location.pathname.split('/').pop().split('.')[0];
+  if (!name) name = 'index';
+  open('/edit/' + name, 'iframe');
+}
 </script>

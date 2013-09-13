@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Node.js 中文 API</title>
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap-theme.min.css">
+<style>
+body {
+  width: 98%;
+  margin: 30px auto;
+}
+.line {
+  padding: 8px;
+}
+.line:nth-child(odd) {
+  background-color: #eee;
+}
+.line .origin {
+  padding: 6px 12px;
+  font-size: 14px;
+}
+.line .origin .num {
+  width: 80px;
+  display: inline-block;
+  color: #d14;
+  font-weight: bold;
+}
+.line .translate {
+  margin-left: 80px;
+}
+.line .translate input[type=text] {
+  display: block;
+  width: 100%;
+  height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  background-color: rgb(235, 250, 234);
+  color: rgb(16, 99, 206);
+  font-weight: bold;
+}
+</style>
+</head>
+<body>
+  <div class="lines">
+    <% for (var i = 0; i < originLines.length; i++) {
+      var line = originLines[i];
+      if (line.trim().length < 1) continue;
+    %>
+    <div class="line">
+      <div class="origin">
+        <span class="num">第<%= i + 1 %>行</span>
+        <%= line %>
+      </div>
+      <div class="translate">
+        <input type="text" value="<%= line %>">
+      </div>
+    </div>
+    <% } %>
+  </div>
+</body>
+</html>
+<script src="/public/js/jquery.js"></script>
+<script src="/public/bootstrap/js/bootstrap.min.js"></script>
+<script>
+
+</script>
