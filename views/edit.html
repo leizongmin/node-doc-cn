@@ -17,7 +17,6 @@ body {
   background-color: #eee;
 }
 .line .origin {
-  padding: 6px 12px;
   font-size: 14px;
 }
 .line .origin .num {
@@ -26,8 +25,13 @@ body {
   color: #d14;
   font-weight: bold;
 }
+.line .origin pre {
+  font-size: 14px;
+  font-weight: bold;
+  font-family: Georgia, FreeSerif, Times, serif;
+}
 .line .translate {
-  margin-left: 80px;
+  
 }
 .line .translate input[type=text] {
   display: block;
@@ -45,9 +49,12 @@ body {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-  background-color: rgb(235, 250, 234);
   color: rgb(16, 99, 206);
   font-weight: bold;
+  font-family: Georgia, FreeSerif, Times, serif;
+}
+.line.code {
+  opacity: 0.3;
 }
 </style>
 </head>
@@ -55,12 +62,15 @@ body {
   <div class="lines">
     <% for (var i = 0; i < originLines.length; i++) {
       var line = originLines[i];
+      var style = '';
       if (line.trim().length < 1) continue;
+      if (line.match(/<!--([^=]+)=([^\-]+)-->\n*/g)) continue;
+      if (line.substr(0, 4) === '    ') style += ' code';
     %>
-    <div class="line">
+    <div class="line <%= style %>">
       <div class="origin">
         <span class="num">第<%= i + 1 %>行</span>
-        <%= line %>
+        <pre><%= line %></pre>
       </div>
       <div class="translate">
         <input type="text" value="<%= line %>">
