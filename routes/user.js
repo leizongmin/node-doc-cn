@@ -72,7 +72,7 @@ module.exports = function (app) {
           path:   '/',
           maxAge: config.signin.maxAge
         });
-        res.redirect(req.query.url || '/');
+        res.redirect(req.query.url || '/api/');
       } else {
         showError('密码不正确');
       }
