@@ -59,6 +59,10 @@ body {
 .line.code, .line.stability {
   opacity: 0.5;
 }
+.line .status {
+  padding: 4px 6px;
+  border-radius: 3px;
+}
 </style>
 </head>
 <body>
@@ -66,12 +70,16 @@ body {
     <% for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
     %>
-    <div class="line <%= line.type %>">
+    <div class="line <%= line.type %>" data-hash="<%= line.hash %>">
       <div class="origin">
         <pre><%= line.content %></pre>
       </div>
       <div class="translate">
-        <textarea rows="<%= line.rows %>"><%= line.content %></textarea>
+        <textarea rows="<%= line.rows %>"><%= line.current ? line.current.content : line.content %></textarea>
+      </div>
+      <div class="op">
+        <button class="btn btn-xs btn-primary save-line"><i class="glyphicon glyphicon-ok"></i>保存</button>
+        <span class="status"></span>
       </div>
     </div>
     <% } %>
@@ -81,5 +89,21 @@ body {
 <script src="/public/js/jquery.js"></script>
 <script src="/public/bootstrap/js/bootstrap.min.js"></script>
 <script>
-
+// 保存
+$('.save-line').click(function () {
+  var $me = $(this);
+  var $line = $me.closest('.line');
+  var content = $line.find('.translate textarea').val();
+  var hash = $line.data('hash');
+  $.post('/translate/save', {
+    content: content,
+    hash:    hash
+  }, function (d) {
+    if (d.error) {
+      $line.find('.op .status').addClass('alert-danger').text(d.error);
+    } else {
+      $line.find('.op .status').addClass('alert-success').text('已保存');
+    }
+  }, 'json');
+});
 </script>

@@ -22,19 +22,66 @@ module.exports = function (app) {
       async.eachSeries(lines, function (line, next) {
         line.rows = line.content.split('\n').length;
 
-        var where = '`origin_hash`=' + db.escape(lines.hash);
+        var where = '`origin_hash`=' + db.escape(line.hash);
         db.select('translate_api', '*', where, 'ORDER BY `timestamp` ASC', function (err, translates) {
           if (err) return next(err);
+
+          // 如果当前用户曾经翻译过此项，则自动填写上去
+          for (var i = 0; i < translates.length; i++) {
+            if (translates[i].user_id == req.signinUser.id) {
+              line.current = translates[i];
+              translates.splice(i, 1);
+              break;
+            }
+          }
+
           line.translates = translates;
           next();
         });
 
       }, function (err) {
         if (err) return next(err);
-
+        
         res.locals.lines = lines;
         res.render('edit');
       });
+    });
+  });
+
+  app.post('/translate/save', check_signin, function (req, res, next) {
+    var hash = req.body.hash;
+    var content = req.body.content;
+    var user_id = req.signinUser.id;
+    if (!(hash && hash.length === 32)) return res.json({error: 'hash参数有误'});
+    if (!content) return res.json({error: '翻译后的内容不能为空'});
+    hash = hash.toLowerCase();
+
+    var where = '`origin_hash`=' + db.escape(hash) + ' AND `user_id`=' + db.escape(user_id);
+    db.selectOne('translate_api', '*', where, function (err, item) {
+      if (err) return res.json({error: err.toString()});
+
+      function callback (err, ret) {
+        if (err) return res.json({error: err.toString()});
+        if (ret.affectedRows > 0 || ret.insertId > 0) {
+          res.json({success: 1});
+        } else {
+          res.json({success: 0});
+        }
+      }
+
+      if (item) {
+        db.update('translate_api', 'id=' + db.escape(item.id), {
+          content:   content,
+          timestamp: db.timestamp()
+        }, callback);
+      } else {
+        db.insert('translate_api', {
+          user_id:     user_id,
+          origin_hash: hash,
+          content:     content,
+          timestamp:   db.timestamp()
+        }, callback);
+      }
     });
   });
 
