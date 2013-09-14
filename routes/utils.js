@@ -2,32 +2,64 @@ var path = require('path');
 var fs = require('fs');
 var crypto = require('crypto');
 var async = require('async');
+var config = require('../config');
+var db = config.mysql;
 var utils = module.exports;
 
 
 var TEMPLATE_FILE = path.resolve(__dirname, 'template.html');
 var API_PATH = path.resolve(__dirname, '../api');
 
-// 取API文件名
-function resolveAPIPath (name) {
-  return path.resolve(API_PATH, name + '.markdown');
-}
+
+// 从数据库中读取出所有翻译结果，并生成文件内容
+function readFile (name, callback) {
+  var where = '`file`=' + db.escape(name) +
+              ' AND `version`=' + db.escape(config.api.version) +
+              ' AND `type`!="meta"';
+  db.select('origin_api', '*', where, 'ORDER BY `id` ASC', function (err, lines) {
+    if (err) return next(err);
+
+    // 查找出最好的翻译
+    async.eachSeries(lines, function (line, next) {
+      var where = '`origin_hash`=' + db.escape(line.hash);
+      var orderBy = 'ORDER BY `vote` DESC, `timestamp` DESC';
+      db.selectOne('translate_api', '*', where, orderBy, function (err, translate) {
+        if (err) return next(err);
+
+        line.translate = translate;
+        next();
+      });
+
+    }, function (err) {
+      if (err) return callback(err);
+      
+      // 生成markdown文件
+      lines = lines.map(function (line) {
+        if (line.translate) {
+          return line.translate.content;
+        } else {
+          return line.content;
+        }
+      });
+
+      callback(null, lines.join('\n\n'));
+    });
+  });
+};
 
 // 读取文件内容
 function readAPIFile (name, callback) {
   if (name === 'index') name = '_toc';
   if (name === 'all') {
-    var filename = resolveAPIPath(name);
-    fs.readFile(filename, 'utf8', function (err, content) {
+    readFile(name, function (err, content) {
       if (err) return callback(err);
       processIncludes(content, function (err, content) {
-        callback(err, content, filename);
+        callback(err, content, name + '.markdown');
       });
     });
   } else {
-    var filename = resolveAPIPath(name);
-    fs.readFile(filename, 'utf8', function (err, content) {
-      callback(err, content, filename);
+    readFile(name, function (err, content) {
+      callback(err, content, name + '.markdown');
     });
   }
 }
@@ -59,7 +91,6 @@ function processIncludes (content, callback) {
 }
 
 
-exports.resolveAPIPath = resolveAPIPath;
 exports.readAPIFile = readAPIFile;
 exports.processIncludes = processIncludes;
 exports.TEMPLATE_FILE = TEMPLATE_FILE;

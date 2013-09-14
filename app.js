@@ -36,6 +36,10 @@ app.locals.formatTimestamp = function (t) {
          d.getHours() + ':' + d.getMinutes();
 };
 
+app.locals.config = config;
+
+process.version = config.api.version;
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
