@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>新用户注册</title>
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap-theme.min.css">
+<style>
+body {
+  width: 500px;
+  margin: 30px auto;
+}
+</style>
+</head>
+<body>
+  <form role="form" method="post">
+    <h2>注册</h2>
+    <% if (locals.error) { %>
+    <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <div class="form-group">
+      <label for="ipt-email">邮箱</label>
+      <input name="email" type="email" class="form-control" id="ipt-email" placeholder="必填" value="<%= locals.email || '' %>">
+    </div>
+    <div class="form-group">
+      <label for="ipt-password">密码</label>
+      <input name="password" type="password" class="form-control" id="ipt-password" placeholder="必填" value="<%= locals.password || '' %>">
+    </div>
+    <div class="form-group">
+      <label for="ipt-nickname">昵称</label>
+      <input name="nickname" type="text" class="form-control" id="ipt-nickname" placeholder="如果不填写，将直接显示你的邮箱地址" value="<%= locals.nickname || '' %>">
+    </div>
+    <button type="submit" class="btn btn-primary">注册</button>
+    <a href="/signin" class="btn btn-default">登录</a>
+  </form>
+</body>
+</html>
+<script src="/public/js/jquery.js"></script>
+<script src="/public/bootstrap/js/bootstrap.min.js"></script>
+<script>
+
+</script>

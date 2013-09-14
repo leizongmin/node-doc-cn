@@ -4,6 +4,12 @@ var utils = require('./utils');
 
 
 module.exports = function (app) {
+
+  app.get('/', function (req, res, next) {
+    req.url = '/public/index.html';
+    app(req, res);
+  });
+  
   app.get('/api/:name.:type', function (req, res, next) {
     var name = req.params.name;
     var type = req.params.type;

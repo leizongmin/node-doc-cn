@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>用户登录</title>
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap-theme.min.css">
+<style>
+body {
+  width: 500px;
+  margin: 30px auto;
+}
+</style>
+</head>
+<body>
+  <form role="form" method="post">
+    <h2>登陆</h2>
+    <% if (locals.error) { %>
+    <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+    <div class="form-group">
+      <label for="ipt-email">邮箱</label>
+      <input name="email" type="email" class="form-control" id="ipt-email" value="<%= locals.email || '' %>">
+    </div>
+    <div class="form-group">
+      <label for="ipt-password">密码</label>
+      <input name="password" type="password" class="form-control" id="ipt-password" value="<%= locals.password || '' %>">
+    </div>
+    <button type="submit" class="btn btn-primary">登陆</button>
+    <a href="/signup" class="btn btn-default">注册</a>
+  </form>
+</body>
+</html>
+<script src="/public/js/jquery.js"></script>
+<script src="/public/bootstrap/js/bootstrap.min.js"></script>
+<script>
+
+</script>
