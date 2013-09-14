@@ -1,5 +1,5 @@
-var api2HTML = require('../tools/html');
-var api2JSON = require('../tools/json');
+var api2HTML = require('../origin/tools/html');
+var api2JSON = require('../origin/tools/json');
 var utils = require('./utils');
 
 

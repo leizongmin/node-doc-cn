@@ -3,8 +3,8 @@ var fs = require('fs');
 var async = require('async');
 
 
-var TEMPLATE_FILE = path.resolve(__dirname, '../tools/template.html');
-var API_PATH = path.resolve(__dirname, '../api-en');
+var TEMPLATE_FILE = path.resolve(__dirname, 'template.html');
+var API_PATH = path.resolve(__dirname, '../api');
 
 // 取API文件名
 function resolveAPIPath (name) {
