@@ -120,14 +120,29 @@ $('.save-line').click(function () {
   var $line = $me.closest('.line');
   var content = $line.find('.translate textarea').val();
   var hash = $line.data('hash');
+
+  function setStatus (style, text) {
+    $line.find('.op .status')
+      .removeClass('alert-info')
+      .removeClass('alert-success')
+      .removeClass('alert-danger')
+      .addClass('alert-' + style)
+      .text(text)
+      .show();
+  }
+
+  setStatus('info', '正在提交...');
   $.post('/translate/save', {
     content: content,
     hash:    hash
   }, function (d) {
     if (d.error) {
-      $line.find('.op .status').addClass('alert-danger').text(d.error);
+      setStatus('danger', d.error);
     } else {
-      $line.find('.op .status').addClass('alert-success').text('已保存');
+      setStatus('success', '已保存');
+      setTimeout(function () {
+        $line.find('.op .status').fadeOut();
+      }, 2000);
     }
   }, 'json');
 });
