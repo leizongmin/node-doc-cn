@@ -15,9 +15,6 @@ body {
   margin-bottom: 40px;
   border-bottom: 1px solid #888;
 }
-.line:nth-child(odd) {
-  background-color: #eee;
-}
 .line .origin {
   font-size: 14px;
 }
@@ -32,11 +29,19 @@ body {
   font-family: Georgia, FreeSerif, Times, serif;
 }
 .line .other {
-
+  background-color: #f5f5f5;
+  margin-left: 40px;
+}
+.line .item {
+  margin-bottom: 16px
+}
+.line .other .info {
+  font-weight: normal;
 }
 .line .other pre {
   font-size: 12px;
   font-weight: normal;
+  font-family: Georgia, FreeSerif, Times, serif;
 }
 .line .translate {
   
@@ -85,7 +90,12 @@ body {
       <% for (var j = 0; j < line.translates.length; j++) {
         var t = line.translates[j];
       %>
-        <pre><%= users[t.user_id].nickname %> 于 <%= formatTimestamp(t.timestamp) %> 翻译: <%= t.content %></pre>
+        <div class="item" data-id="<%= t.id %>">
+          <span class="info"><%= users[t.user_id].nickname %> 于 <%= formatTimestamp(t.timestamp) %> 翻译（<%= t.vote %>赞）:</span>
+          <button class="btn btn-xs btn-info vote-line"><i class="glyphicon glyphicon-thumbs-up"></i>赞</button>
+          <button class="btn btn-xs btn-info edit-line"><i class="glyphicon glyphicon-edit"></i>编辑</button>
+          <pre><%= t.content %></pre>
+        </div>
       <% } %>
       </div>
       <div class="translate">
@@ -103,6 +113,7 @@ body {
 <script src="/public/js/jquery.js"></script>
 <script src="/public/bootstrap/js/bootstrap.min.js"></script>
 <script>
+
 // 保存
 $('.save-line').click(function () {
   var $me = $(this);
@@ -118,6 +129,26 @@ $('.save-line').click(function () {
     } else {
       $line.find('.op .status').addClass('alert-success').text('已保存');
     }
+  }, 'json');
+});
+
+// 编辑
+$('.edit-line').click(function () {
+  var $me = $(this);
+  var $item = $me.closest('.item');
+  var $line = $me.closest('.line');
+  var content = $item.find('pre').text();
+  $line.find('.translate textarea').val(content);
+});
+
+// 赞
+$('.vote-line').click(function () {
+  var $me = $(this);
+  var $item = $me.closest('.item');
+  var id = $item.data('id');
+  $.post('/translate/vote', {id: id}, function (d) {
+    if (d.error) return alert(d.error);
+    $me.text('已赞').removeClass('btn-info');
   }, 'json');
 });
 </script>
