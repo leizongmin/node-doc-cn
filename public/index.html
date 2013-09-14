@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>Node.js 中文 API</title>
+<title>Node.js API 中文版</title>
 <link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
 <link rel="stylesheet" href="/public/bootstrap/css/bootstrap-theme.min.css">
 <style>
@@ -21,12 +21,13 @@
   <div id="header">
     <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="navbar-header">
-        <span class="navbar-brand" href="#">Node.js 中文 API</span>
+        <span class="navbar-brand" href="#">Node.js API 中文版</span>
       </div>
       <div class="collapse navbar-collapse navbar-ex5-collapse">
         <ul class="nav navbar-nav">
           <li><a href="/api/" target="iframe">文档首页</a></li>
-          <li><a href="#" onclick="translatePage()">翻译当前页面</a></li>
+          <li><a href="#" onclick="translatePage()">[翻译当前页面]</a></li>
+          <li><a href="#" onclick="previewPage()">[浏览当前页面]</a></li>
           <li><a href="https://github.com/leizongmin/node-doc-cn" target="_blank">项目源码</a></li>
         </ul>
       </div>
@@ -58,5 +59,12 @@ function translatePage () {
   var name = $('#main-iframe')[0].contentWindow.location.pathname.split('/').pop().split('.')[0];
   if (!name) name = 'index';
   open('/edit/' + name, 'iframe');
+}
+
+// 浏览当前页面
+function previewPage () {
+  var name = $('#main-iframe')[0].contentWindow.location.pathname.split('/').pop().split('.')[0];
+  if (!name) name = 'index';
+  open('/api/' + name + '.html', 'iframe');
 }
 </script>
