@@ -12,6 +12,8 @@ body {
 }
 .line {
   padding: 8px;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #888;
 }
 .line:nth-child(odd) {
   background-color: #eee;
@@ -27,7 +29,6 @@ body {
 }
 .line .origin pre {
   font-size: 14px;
-  font-weight: bold;
   font-family: Georgia, FreeSerif, Times, serif;
 }
 .line .translate {
@@ -52,27 +53,25 @@ body {
   font-weight: bold;
   font-family: Georgia, FreeSerif, Times, serif;
 }
-.line.code {
-  opacity: 0.3;
+.line.title {
+  font-weight: bold;
+}
+.line.code, .line.stability {
+  opacity: 0.5;
 }
 </style>
 </head>
 <body>
   <div class="lines">
-    <% for (var i = 0; i < originLines.length; i++) {
-      var line = originLines[i];
-      var style = '';
-      if (line.trim().length < 1) continue;
-      if (line.match(/<!--([^=]+)=([^\-]+)-->\n*/g)) continue;
-      if (line.substr(0, 4) === '    ') style += ' code';
+    <% for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
     %>
-    <div class="line <%= style %>">
+    <div class="line <%= line.type %>">
       <div class="origin">
-        <span class="num">第<%= i + 1 %>行</span>
-        <pre><%= line %></pre>
+        <pre><%= line.content %></pre>
       </div>
       <div class="translate">
-        <textarea rows="<%= line.split('\n').length %>"><%= line %></textarea>
+        <textarea rows="<%= line.rows %>"><%= line.content %></textarea>
       </div>
     </div>
     <% } %>

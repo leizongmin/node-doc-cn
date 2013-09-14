@@ -42,7 +42,7 @@ db.delete('origin_api', '`version`=' + db.escape(VERSION), function (err) {
             type = 'title';
           } else if (/<!--([^=]+)=([^\-]+)-->/.test(lines[0])) {
             type = 'meta';
-          } else if (/^Stability: ([0-5])(?:\s*-\s*)?(.*)$/.test(lines[0])) {
+          } else if (/^Stability: ([0-5])(?:\s*-\s*)?(.*)$/.test(lines[0].trim())) {
             type = 'stability';
           } else if (lines[0].substr(0, 4) === '    ') {
             type = 'code';
