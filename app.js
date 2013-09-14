@@ -30,6 +30,12 @@ require('./routes/view_api')(app);
 require('./routes/edit_api')(app);
 require('./routes/user')(app);
 
+app.locals.formatTimestamp = function (t) {
+  var d = new Date(t * 1000);
+  return d.getFullYear() + '/' + d.getMonth() + '/' + d.getDate() + ' ' +
+         d.getHours() + ':' + d.getMinutes();
+};
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });

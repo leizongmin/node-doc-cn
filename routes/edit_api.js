@@ -30,7 +30,7 @@ module.exports = function (app) {
           for (var i = 0; i < translates.length; i++) {
             if (translates[i].user_id == req.signinUser.id) {
               line.current = translates[i];
-              translates.splice(i, 1);
+              //translates.splice(i, 1);
               break;
             }
           }
@@ -42,8 +42,31 @@ module.exports = function (app) {
       }, function (err) {
         if (err) return next(err);
         
-        res.locals.lines = lines;
-        res.render('edit');
+        // 查询出所有相关用户的信息
+        var users = {};
+        lines.forEach(function (line) {
+          line.translates.forEach(function (t) {
+            users[t.user_id] = {};
+          });
+        });
+        async.eachSeries(Object.keys(users), function (uid, next) {
+
+          db.selectOne('user_list', '`id`, `email`, `nickname`', '`id`=' + db.escape(uid), function (err, user) {
+            if (err) return next(err);
+            if (!user) {
+              user = {id: 0, email: '', nickname: '用户不存在'};
+            }
+            users[uid] = user;
+            next();
+          });
+
+        }, function (err) {
+          if (err) return next(err);
+
+          res.locals.users = users;
+          res.locals.lines = lines;
+          res.render('edit');
+        });
       });
     });
   });

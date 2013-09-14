@@ -31,6 +31,13 @@ body {
   font-size: 14px;
   font-family: Georgia, FreeSerif, Times, serif;
 }
+.line .other {
+
+}
+.line .other pre {
+  font-size: 12px;
+  font-weight: normal;
+}
 .line .translate {
   
 }
@@ -73,6 +80,13 @@ body {
     <div class="line <%= line.type %>" data-hash="<%= line.hash %>">
       <div class="origin">
         <pre><%= line.content %></pre>
+      </div>
+      <div class="other">
+      <% for (var j = 0; j < line.translates.length; j++) {
+        var t = line.translates[j];
+      %>
+        <pre><%= users[t.user_id].nickname %> 于 <%= formatTimestamp(t.timestamp) %> 翻译: <%= t.content %></pre>
+      <% } %>
       </div>
       <div class="translate">
         <textarea rows="<%= line.rows %>"><%= line.current ? line.current.content : line.content %></textarea>
