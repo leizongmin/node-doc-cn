@@ -2,6 +2,7 @@ var path = require('path');
 var fs = require('fs');
 var crypto = require('crypto');
 var async = require('async');
+var xss = require('xss');
 var config = require('../config');
 var db = config.mysql;
 var utils = module.exports;
@@ -42,7 +43,7 @@ function readFile (name, callback) {
         }
       });
 
-      callback(null, lines.join('\n\n'));
+      callback(null, xss(lines.join('\n\n')));
     });
   });
 };
