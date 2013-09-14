@@ -1,6 +1,7 @@
 var config = require('../config');
 var db = config.mysql;
 var utils = require('./utils');
+var check_signin = require('./check_signin');
 
 module.exports = function (app) {
   
@@ -76,6 +77,10 @@ module.exports = function (app) {
         showError('密码不正确');
       }
     });
+  });
+
+  app.all('/current_user', check_signin, function (req, res, next) {
+    res.json(req.signinUser);
   });
 
 };
