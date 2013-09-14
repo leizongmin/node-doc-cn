@@ -14,7 +14,7 @@ module.exports = function (app) {
     utils.readAPIFile(name, function (err, content) {
       if (err) return next(err);
 
-      var lines = content.split('\n');
+      var lines = content.split(/\r?\n\r?\n/);
       res.locals.originLines = lines;
       res.render('edit');
     });
