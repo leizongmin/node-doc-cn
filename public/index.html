@@ -32,6 +32,7 @@
           <li><a href="/api/" target="iframe">文档首页</a></li>
           <li id="op-translate"><a href="#" onclick="translatePage()">翻译当前页面</a></li>
           <li id="op-view"><a href="#" onclick="previewPage()">浏览当前页面</a></li>
+          <li id="op-open"><a href="#" target="_blank">在新窗口中打开</a></li>
           <li><a href="/user/list" target="iframe">感谢</a></li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -108,7 +109,15 @@ function previewPage () {
   var iframe = $('#main-iframe')[0].contentWindow;
   var $t = $('#op-translate');
   var $v = $('#op-view');
+  var $o = $('#op-open');
+
+  var oldUrl = '';
   setInterval(function () {
+    if (oldUrl === iframe.location.href) return;
+
+    oldUrl = iframe.location.href;
+    $o.find('a').attr('href', oldUrl).text('[' + iframe.document.title + ']');
+
     var p = iframe.location.pathname;
     if (p.substr(0, 5) === '/api/') {
       $t.show();
