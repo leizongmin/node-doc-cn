@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>用户列表</title>
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap-theme.min.css">
+<style>
+body {
+  width: 600px;
+  margin: 30px auto;
+}
+</style>
+</head>
+<body>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>昵称</th>
+        <th>翻译量</th>
+        <th>被赞次数</th>
+        <th>赞别人次数</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (var i = 0; i < users.length; i++) {
+        var user = users[i];
+      %>
+      <tr>
+        <td><%= user.id %></td>
+        <td><a href="/user/id/<%= user.id %>"><%= user.nickname %></a></td>
+        <td><%= user.count %></td>
+        <td><%= user.vote %></td>
+        <td><%= user.review %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</body>
+</html>
+<script src="/public/js/jquery.js"></script>
+<script src="/public/bootstrap/js/bootstrap.min.js"></script>
+<script>
+
+</script>

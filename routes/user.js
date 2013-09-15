@@ -1,3 +1,4 @@
+var async = require('async');
 var config = require('../config');
 var db = config.mysql;
 var utils = require('./utils');
@@ -81,6 +82,46 @@ module.exports = function (app) {
 
   app.all('/current_user', check_signin, function (req, res, next) {
     res.json(req.signinUser);
+  });
+
+  // 用户列表
+  app.get('/user/list', function (req, res, next) {
+    db.select('user_list', '`id`, `nickname`', '`is_active`=1', function (err, users) {
+      if (err) return next(err);
+
+      // 查询出用户翻译的数量及被赞的数量，赞别人的次数
+      async.eachSeries(users, function (user, next) {
+
+        var fields = 'COUNT(*) AS `count`, SUM(`vote`) AS `vote`';
+        var where = '`user_id`=' + db.escape(user.id);
+        db.selectOne('translate_api', fields, where, function (err, info) {
+          if (err) return next(err);
+
+          user.count = info.count;
+          user.vote = info.vote;
+          
+          db.selectOne('translate_vote_history', 'COUNT(*) AS `count`', where, function (err, info) {
+            if (err) return next(err);
+
+            user.review = info.count;
+            next();
+          });
+        });
+
+      }, function (err) {
+        if (err) return next(err);
+        
+        // 按照翻译量排序
+        users.sort(function (a, b) {
+          var v = b.count - a.count;
+          if (v !== 0) return v;
+          return b.vote - a.vote;
+        });
+
+        res.locals.users = users;
+        res.render('user_list');
+      });
+    });
   });
 
 };
