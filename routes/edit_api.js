@@ -120,7 +120,8 @@ module.exports = function (app) {
 
       db.insert('translate_vote_history', {
         translate_id: id,
-        user_id:      user_id
+        user_id:      user_id,
+        timestamp:    db.timestamp()
       }, function (err, ret) {
         if (err) return res.json({error: err.toString()});
 
