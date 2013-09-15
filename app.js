@@ -29,6 +29,7 @@ app.configure(function(){
 require('./routes/view_api')(app);
 require('./routes/edit_api')(app);
 require('./routes/user')(app);
+require('./routes/help')(app);
 
 app.locals.formatTimestamp = function (t) {
   function n2 (v) {
