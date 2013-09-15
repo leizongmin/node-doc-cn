@@ -147,6 +147,7 @@ $('.save-line').click(function () {
       setTimeout(function () {
         $line.find('.op .status').fadeOut();
       }, 2000);
+      $line.removeClass('need');
     }
   }, 'json');
 });
