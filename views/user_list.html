@@ -16,7 +16,7 @@ body {
   <table class="table table-striped">
     <thead>
       <tr>
-        <th>ID</th>
+        <th>贡献榜</th>
         <th>昵称</th>
         <th>翻译量</th>
         <th>被赞次数</th>
@@ -28,7 +28,7 @@ body {
         var user = users[i];
       %>
       <tr>
-        <td><%= user.id %></td>
+        <td><%= i + 1 %></td>
         <td><a href="/user/id/<%= user.id %>"><%= user.nickname %></a></td>
         <td><%= user.count %></td>
         <td><%= user.vote %></td>
