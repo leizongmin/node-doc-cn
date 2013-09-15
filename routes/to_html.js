@@ -35,7 +35,8 @@ xss.onIgnoreTag = function (tag, html, options) {
   } else {
     return xss._onIgnoreTag(tag, html, options);
   }
-}
+};
+xss.whiteList.a.push('id');
 
 function toHTML(input, filename, template, cb) {
   var lexed = marked.lexer(input);
