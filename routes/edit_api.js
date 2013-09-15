@@ -82,32 +82,57 @@ module.exports = function (app) {
     // 由于 &gt; 和 &lt; 转换会 > 和 <
     content = content.replace(/&gt;/g, '>').replace(/&lt;/, '<');
 
-    var where = '`origin_hash`=' + db.escape(hash) + ' AND `user_id`=' + db.escape(user_id);
-    db.selectOne('translate_api', '*', where, function (err, item) {
+    // 检查修改后的内容，应尽量保留原有的格式
+    db.selectOne('origin_api', '*', '`hash`=' + db.escape(hash), function (err, origin) {
       if (err) return res.json({error: err.toString()});
+      if (!origin) return res.json({error: '要翻译的条目不存在'});
 
-      function callback (err, ret) {
-        if (err) return res.json({error: err.toString()});
-        if (ret.affectedRows > 0 || ret.insertId > 0) {
-          res.json({success: 1});
-        } else {
-          res.json({success: 0});
+      function formatError (err) {
+        res.json({error: '翻译时请保留原来的格式：' + err})
+      }
+
+      // 检查格式是否一致
+      if (origin.type === 'title') {
+        var i = origin.content.indexOf(' ');
+        var j = content.indexOf(' ');
+        if (i !== j) return formatError('标题前面应该有' + i + '个#后面再跟一个空格');
+      } else if (origin.type === 'code') {
+        var lines = content.split(/\r?\n/);
+        for (var i = 0; i < lines.length; i++) {
+          if (lines[i].substr(0, 4) !== '    ') {
+            return formatError('（第' + (i + 1) + '行）代码块的每一行应该以4个空格开头');
+          }
         }
       }
 
-      if (item) {
-        db.update('translate_api', 'id=' + db.escape(item.id), {
-          content:   content,
-          timestamp: db.timestamp()
-        }, callback);
-      } else {
-        db.insert('translate_api', {
-          user_id:     user_id,
-          origin_hash: hash,
-          content:     content,
-          timestamp:   db.timestamp()
-        }, callback);
-      }
+      // 保存修改结果
+      var where = '`origin_hash`=' + db.escape(hash) + ' AND `user_id`=' + db.escape(user_id);
+      db.selectOne('translate_api', '*', where, function (err, item) {
+        if (err) return res.json({error: err.toString()});
+
+        function callback (err, ret) {
+          if (err) return res.json({error: err.toString()});
+          if (ret.affectedRows > 0 || ret.insertId > 0) {
+            res.json({success: 1});
+          } else {
+            res.json({success: 0});
+          }
+        }
+
+        if (item) {
+          db.update('translate_api', 'id=' + db.escape(item.id), {
+            content:   content,
+            timestamp: db.timestamp()
+          }, callback);
+        } else {
+          db.insert('translate_api', {
+            user_id:     user_id,
+            origin_hash: hash,
+            content:     content,
+            timestamp:   db.timestamp()
+          }, callback);
+        }
+      });
     });
   });
 
