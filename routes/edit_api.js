@@ -79,6 +79,9 @@ module.exports = function (app) {
     if (!content) return res.json({error: '翻译后的内容不能为空'});
     hash = hash.toLowerCase();
 
+    // 由于 &gt; 和 &lt; 转换会 > 和 <
+    content = content.replace(/&gt;/g, '>').replace(/&lt;/, '<');
+
     var where = '`origin_hash`=' + db.escape(hash) + ' AND `user_id`=' + db.escape(user_id);
     db.selectOne('translate_api', '*', where, function (err, item) {
       if (err) return res.json({error: err.toString()});
