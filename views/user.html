@@ -10,6 +10,9 @@ body {
   width: 98%;
   margin: 30px auto;
 }
+.content {
+  color: #101EB9;
+}
 </style>
 </head>
 <body>
@@ -29,9 +32,9 @@ body {
       %>
       <tr>
         <td><%= formatTimestamp(item.timestamp) %></td>
-        <td><%= item.file %></td>
+        <td><a href="/api/<%= item.file %>.html"><%= item.file %></a></td>
         <td><%= item.version %></td>
-        <td>将 “<%= item.origin_content %>” 翻译为 “<%= item.content %>”</td>
+        <td>将 “<span class="content"><%= item.origin_content %></span>” 翻译为 “<span class="content"><%= item.content %></span>”</td>
       </tr>
       <% } %>
     </tbody>
