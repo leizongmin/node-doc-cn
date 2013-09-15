@@ -1,4 +1,4 @@
-var api2HTML = require('../origin/tools/html');
+var api2HTML = require('./to_html');
 var api2JSON = require('../origin/tools/json');
 var utils = require('./utils');
 
