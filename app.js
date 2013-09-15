@@ -31,9 +31,12 @@ require('./routes/edit_api')(app);
 require('./routes/user')(app);
 
 app.locals.formatTimestamp = function (t) {
+  function n2 (v) {
+    return v < 10 ? '0' + v : v;
+  }
   var d = new Date(t * 1000);
   return d.getFullYear() + '/' + d.getMonth() + '/' + d.getDate() + ' ' +
-         d.getHours() + ':' + d.getMinutes();
+         d.getHours() + ':' + n2(d.getMinutes());
 };
 
 app.locals.config = config;

@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title><%= user.nickname %>的贡献</title>
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap-theme.min.css">
+<style>
+body {
+  width: 98%;
+  margin: 30px auto;
+}
+</style>
+</head>
+<body>
+  <h1><%= user.nickname %>的贡献（共翻译<%= user.count %>条，<%= user.vote %>次被赞）</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th width="130">时间</th>
+        <th>文件</th>
+        <th>版本</th>
+        <th>翻译内容</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (var i = 0; i < translates.length; i++) {
+        var item = translates[i];
+      %>
+      <tr>
+        <td><%= formatTimestamp(item.timestamp) %></td>
+        <td><%= item.file %></td>
+        <td><%= item.version %></td>
+        <td>将 “<%= item.origin_content %>” 翻译为 “<%= item.content %>”</td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</body>
+</html>
+<script src="/public/js/jquery.js"></script>
+<script src="/public/bootstrap/js/bootstrap.min.js"></script>
+<script>
+
+</script>
