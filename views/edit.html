@@ -10,6 +10,13 @@ body {
   width: 98%;
   margin: 30px auto;
 }
+.notes {
+  margin: 20px 0;
+  padding: 15px 30px 15px 15px;
+  border-left: 5px solid #eee;
+  background-color: #f0f7fd;
+  border-color: #d0e3f0;
+}
 .line {
   padding: 8px;
   margin-bottom: 40px;
@@ -82,6 +89,14 @@ body {
 </style>
 </head>
 <body>
+  <div class="notes">
+    <p>
+    小提示：<br>
+    1、带有橙色边框的段落是暂时还没有人翻译的，应该优先翻译这些段落；<br>
+    2、对于别人已经翻译过的段落，如果能认可改翻译结果，请点旁边的 [赞] 按钮；否则请点旁边的 [编辑] 按钮，修改为你理想的翻译结果后，并点 [保存]；<br>
+    3、本文档采用 Markdown 格式编写，翻译时也请保持原来的文档格式；
+    </p>
+  </div>
   <div class="lines">
     <% for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
