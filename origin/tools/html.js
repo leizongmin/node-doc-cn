@@ -22,6 +22,7 @@
 var fs = require('fs');
 var marked = require('marked');
 var path = require('path');
+var xss = require('xss');
 
 module.exports = toHTML;
 
@@ -54,6 +55,8 @@ function render(lexed, filename, template, cb) {
     // content has to be the last thing we do with
     // the lexed tokens, because it's destructive.
     content = marked.parser(lexed);
+    // XSS过滤
+    content = xss(content);
     template = template.replace(/__CONTENT__/g, content);
 
     cb(null, template);
