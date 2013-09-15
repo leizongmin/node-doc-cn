@@ -75,6 +75,10 @@ body {
   padding: 4px 6px;
   border-radius: 3px;
 }
+.line.need {
+  border: 1px solid rgb(255, 184, 0);
+  box-shadow: 0 0 6px rgb(255, 184, 0);
+}
 </style>
 </head>
 <body>
@@ -82,7 +86,7 @@ body {
     <% for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
     %>
-    <div class="line <%= line.type %>" data-hash="<%= line.hash %>">
+    <div class="line <%= line.type %> <%= line.translates.length > 0 ? '' : 'need' %>" data-hash="<%= line.hash %>">
       <div class="origin">
         <pre><%= line.content %></pre>
       </div>
