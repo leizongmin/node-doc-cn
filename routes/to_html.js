@@ -26,6 +26,17 @@ var xss = require('xss');
 
 module.exports = toHTML;
 
+// 配置XSS
+xss._onIgnoreTag = xss.onIgnoreTag;
+xss.onIgnoreTag = function (tag, html, options) {
+  // 不过滤 <!-- xxx --> 因为这些在生产HTML时有用
+  if (/<!--.*-->*/.test(html.trim())) {
+    return html;
+  } else {
+    return xss._onIgnoreTag(tag, html, options);
+  }
+}
+
 function toHTML(input, filename, template, cb) {
   var lexed = marked.lexer(input);
   fs.readFile(template, 'utf8', function(er, template) {

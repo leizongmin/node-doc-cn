@@ -14,8 +14,7 @@ var API_PATH = path.resolve(__dirname, '../api');
 // 从数据库中读取出所有翻译结果，并生成文件内容
 function readFile (name, callback) {
   var where = '`file`=' + db.escape(name) +
-              ' AND `version`=' + db.escape(config.api.version) +
-              ' AND `type`!="meta"';
+              ' AND `version`=' + db.escape(config.api.version);
   db.select('origin_api', '*', where, 'ORDER BY `id` ASC', function (err, lines) {
     if (err) return next(err);
 
