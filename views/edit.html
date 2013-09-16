@@ -151,11 +151,18 @@ $('.save-line').click(function () {
       .show();
   }
 
+  // 两次提交间隔不得小于5秒
+  var t = $me.data('timestamp');
+  if (isNaN(t)) t = 0;
+  if (Date.now() - t < 5000) return setStatus('info', '正在提交，请耐心等候...');
+  $me.data('timestamp', Date.now());
+
   setStatus('info', '正在提交...');
   $.post('/translate/save', {
     content: content,
     hash:    hash
   }, function (d) {
+    $me.data('timestamp', 0);
     if (d.error) {
       setStatus('danger', d.error);
     } else {
