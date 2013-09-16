@@ -177,7 +177,12 @@ $('.save-line').click(function () {
 
 // 编辑框失去焦点时自动保存
 $('.translate textarea').blur(function () {
-  $(this).closest('.line').find('.save-line').click();
+  // 如果编辑框的内容与原文一致，则不能自动保存，以免误操作
+  var $line = $(this).closest('.line');
+  var origin = $line.find('.origin pre').html();
+  var content = $line.find('.translate textarea').val();
+  if (origin === content) return;
+  $line.find('.save-line').click();
 });
 
 // 编辑
