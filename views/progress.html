@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>完成进度</title>
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/public/bootstrap/css/bootstrap-theme.min.css">
+<style>
+body {
+  width: 98%;
+  margin: 30px auto;
+}
+</style>
+</head>
+<body>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>文件</th>
+        <th>段落数量</th>
+        <th>已完成数量</th>
+        <th>完成百分比</th>
+        <th>参与用户</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for (var i in files) {
+        var file = files[i];
+      %>
+      <tr>
+        <td><a href="/api/<%= file.name %>.html"><%= file.name %></a></td>
+        <td><%= file.count %></td>
+        <td><%= file.finish %></td>
+        <td><%= (file.percent * 100).toFixed(1) %>%</td>
+        <td>
+          <% for (var uid in file.users) {
+            var user = users[uid];
+            var count = file.users[uid];
+          %>
+          <a href="/user/id/<%= user.id %>"><%= user.nickname %></a> <%= count %>
+          (<%= (count / file.count * 100).toFixed(1) %>%), &nbsp;
+          <% } %>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</body>
+</html>
+<script src="/public/js/jquery.js"></script>
+<script src="/public/bootstrap/js/bootstrap.min.js"></script>
+<script>
+
+</script>

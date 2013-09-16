@@ -41,7 +41,7 @@ module.exports = function (app) {
 
       }, function (err) {
         if (err) return next(err);
-        
+
         // 查询出所有相关用户的信息
         var users = {};
         lines.forEach(function (line) {
