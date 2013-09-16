@@ -5,7 +5,7 @@ var utils = require('./utils');
 var check_signin = require('./check_signin');
 
 module.exports = function (app) {
-  
+
   app.get('/signup', function (req, res, next) {
     res.render('signup');
   });
@@ -99,7 +99,7 @@ module.exports = function (app) {
 
           user.count = info.count;
           user.vote = info.vote;
-          
+
           db.selectOne('translate_vote_history', 'COUNT(*) AS `count`', where, function (err, info) {
             if (err) return next(err);
 
@@ -110,7 +110,7 @@ module.exports = function (app) {
 
       }, function (err) {
         if (err) return next(err);
-        
+
         // 按照翻译量排序
         users.sort(function (a, b) {
           var v = b.count - a.count;
