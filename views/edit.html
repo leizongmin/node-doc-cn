@@ -168,6 +168,11 @@ $('.save-line').click(function () {
   }, 'json');
 });
 
+// 编辑框失去焦点时自动保存
+$('.translate textarea').blur(function () {
+  $(this).closest('.line').find('.save-line').click();
+});
+
 // 编辑
 $('.edit-line').click(function () {
   var $me = $(this);
