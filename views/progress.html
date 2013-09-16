@@ -10,6 +10,12 @@ body {
   width: 98%;
   margin: 30px auto;
 }
+tr.full td, .table-striped>tbody>tr.full:nth-child(odd)>td, .table-striped>tbody>tr.full:nth-child(odd)>th {
+  background-color: rgb(208, 255, 208);
+}
+tr.near td, .table-striped>tbody>tr.near:nth-child(odd)>td, .table-striped>tbody>tr.near:nth-child(odd)>th {
+  background-color: rgb(255, 249, 208);
+}
 </style>
 </head>
 <body>
@@ -27,7 +33,7 @@ body {
       <% for (var i in files) {
         var file = files[i];
       %>
-      <tr>
+      <tr class="<%= file.percent === 1 ? 'full' : (file.percent >= 0.8 ? 'near' : '') %>">
         <td><a href="/api/<%= file.name %>.html"><%= file.name %></a></td>
         <td><%= file.count %></td>
         <td><%= file.finish %></td>
