@@ -33,9 +33,9 @@ body {
         <td><%= file.finish %></td>
         <td><%= (file.percent * 100).toFixed(1) %>%</td>
         <td>
-          <% for (var uid in file.users) {
-            var user = users[uid];
-            var count = file.users[uid];
+          <% for (var j in file.users) {
+            var user = users[file.users[j].user_id];
+            var count = file.users[j].count;
           %>
           <a href="/user/id/<%= user.id %>"><%= user.nickname %></a> <%= count %>
           (<%= (count / file.count * 100).toFixed(1) %>%), &nbsp;

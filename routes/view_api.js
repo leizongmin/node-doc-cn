@@ -95,12 +95,25 @@ module.exports = function (app) {
             count++;
             if (lines[i] > 0) finish++;
           }
+
+          // 用户按照翻译数量排序
+          var userList = [];
+          for (var i in users) {
+            userList.push({
+              user_id: i,
+              count:   users[i]
+            });
+          }
+          userList.sort(function (a, b) {
+            return b.count - a.count;
+          });
+
           results.push({
             name:    f,
             count:   count,
             finish:  finish,
             percent: finish / count,
-            users:   users
+            users:   userList
           });
 
           next();
