@@ -33,6 +33,7 @@
           <li id="op-translate"><a href="#" onclick="translatePage()">翻译当前页面</a></li>
           <li id="op-view"><a href="#" onclick="previewPage()">浏览当前页面</a></li>
           <li id="op-open"><a href="#" target="_blank" title="在新窗口中打开">首页</a></li>
+          <li><a href="/progress" target="iframe">进度</a></li>
           <li><a href="/user/list" target="iframe">感谢</a></li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -111,14 +112,25 @@ function previewPage () {
   var $v = $('#op-view');
   var $o = $('#op-open');
 
+  // 自动在iframe中打开页面
+  var p = location.hash.substr(1);
+  if (p) {
+    iframe.location = p;
+  }
+
   var oldUrl = '';
   setInterval(function () {
     if (oldUrl === iframe.location.href) return;
 
     oldUrl = iframe.location.href;
-    $o.find('a').attr('href', oldUrl).text('[' + iframe.document.title + ']');
+    if (iframe.document.title) {
+      $o.find('a').attr('href', oldUrl).text('[' + iframe.document.title + ']');
+    } else {
+      $o.find('a').attr('href', oldUrl).text('');
+    }
 
     var p = iframe.location.pathname;
+    location.hash = p;
     if (p.substr(0, 5) === '/api/') {
       $t.show();
       $v.hide();
