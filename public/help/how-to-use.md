@@ -3,5 +3,5 @@
 
 这个界面应该还是挺容易操作的。暂时先完善功能，如果实在不会用，请联系站长：
 
-+ 微博：http://www.weibo.com/ucdok
++ 微博：http://weibo.com/ucdok
 + QQ：402450329
