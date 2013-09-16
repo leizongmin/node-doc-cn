@@ -61,6 +61,8 @@ module.exports = function (app) {
                   ' LEFT JOIN `translate_api` AS `B`' +
                   ' ON `A`.`hash`=`B`.`origin_hash`' +
                   ' WHERE `file`=' + db.escape(f) +
+                  ' AND `type`!="meta"' +
+                  ' AND `version`=' + db.escape(config.api.version) +
                   ' GROUP BY `A`.`hash`';
         db.query(sql, function (err, list) {
           if (err) return next(err);
