@@ -7,20 +7,32 @@
 <link rel="stylesheet" href="/public/bootstrap/css/bootstrap-theme.min.css">
 <style>
 body {
-  width: 98%;
-  margin: 30px auto;
 }
+
 .notes {
-  margin: 20px 0;
   padding: 15px 30px 15px 15px;
-  border-left: 5px solid #eee;
+  border-left: 5px solid;
+  border-bottom: 1px solid;
   background-color: #f0f7fd;
   border-color: #d0e3f0;
 }
+.notes h2 {
+  font-size: 100%;
+  font-weight: bold;
+  margin: 0 0 10px;
+  display: block;
+}
+
 .line {
-  padding: 8px;
-  margin-bottom: 40px;
-  border-bottom: 1px solid #888;
+  padding: 15px 30px 15px 15px;
+  border-left: 5px solid;
+  border-bottom: 1px solid;
+  background-color: #ffffff;
+  border-color: #d6e9c6;
+}
+.line.need {
+  background-color: #fcf8e3;
+  border-color: #fbeed5;
 }
 .line .origin {
   font-size: 14px;
@@ -31,98 +43,98 @@ body {
   color: #d14;
   font-weight: bold;
 }
+.line .origin h2 {
+  font-size: 100%;
+  font-weight: bold;
+  margin: 0 0 10px;
+  display: block;
+}
 .line .origin pre {
   font-size: 14px;
-  font-family: Georgia, FreeSerif, Times, serif;
+  font-family: "Ubuntu Mono", sans-serif;
+  margin: 0 0 10px;
+  padding: 10px;
+  border-radius: 0;
+  background-color: #f9f9f9;
+  border-color: #e0e0e0;
+  color: #777777;
 }
 .line .other {
-  background-color: #f5f5f5;
-  margin-left: 40px;
+  margin-bottom: 16px;
 }
-.line .item {
-  margin-bottom: 16px
-}
-.line .other .info {
-  font-weight: normal;
+.line .other h2 {
+  font-size: 100%;
+  font-weight: bold;
+  margin: 0 0 10px;
+  display: block;
 }
 .line .other pre {
-  font-size: 12px;
-  font-weight: normal;
-  font-family: Georgia, FreeSerif, Times, serif;
+  font-size: 14px;
+  font-family: "Ubuntu Mono", sans-serif;
+  margin: 0 0 10px;
+  padding: 10px;
+  border-radius: 0;
+  background-color: #fcfcfc;
+  border-color: #e7e7e7;
 }
 .line .translate {
-  
+
 }
 .line .translate textarea {
   display: block;
   width: 100%;
-  padding: 6px 12px;
   font-size: 14px;
-  line-height: 1.428571429;
-  color: #555555;
-  vertical-align: middle;
+  font-family: "Ubuntu Mono", sans-serif;
+  margin: 0 0 10px;
+  padding: 10px;
+  border-radius: 0;
+  color: #000;
   background-color: #ffffff;
   border: 1px solid #cccccc;
-  border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-  color: rgb(16, 99, 206);
-  font-weight: bold;
-  font-family: Georgia, FreeSerif, Times, serif;
-}
-.line.title {
-  font-weight: bold;
-}
-.line.code, .line.stability {
-  
 }
 .line .status {
   padding: 4px 6px;
   border-radius: 3px;
 }
-.line.need {
-  border: 1px solid rgb(255, 184, 0);
-  box-shadow: 0 0 6px rgb(255, 184, 0);
+.lines.need-only .translated {
+  display: none;
 }
 </style>
 </head>
 <body>
   <div class="notes">
+    <h2>小提示</h2>
+    <ol>
+      <li>带有橙色边框的段落是暂时还没有人翻译的，应该优先翻译这些段落</li>
+      <li>对于别人已经翻译过的段落，如果能认可改翻译结果，请点旁边的 [赞] 按钮；否则请点旁边的 [编辑] 按钮，修改为你理想的翻译结果后，并点 [保存]</li>
+      <li>本文档采用 Markdown 格式编写，翻译时也请保持原来的文档格式；</li>
+    </ol>
     <p>
-    小提示：<br>
-    1、带有橙色边框的段落是暂时还没有人翻译的，应该优先翻译这些段落；<br>
-    2、对于别人已经翻译过的段落，如果能认可改翻译结果，请点旁边的 [赞] 按钮；否则请点旁边的 [编辑] 按钮，修改为你理想的翻译结果后，并点 [保存]；<br>
-    3、本文档采用 Markdown 格式编写，翻译时也请保持原来的文档格式；<br>
-    <button class="btn btn-primary" id="btn-toggle">仅显示未翻译的段落</button>
+      <button class="btn btn-primary" id="btn-toggle">仅显示未翻译的段落</button>
     </p>
   </div>
   <div class="lines">
     <% for (var i = 0; i < lines.length; i++) {
       var line = lines[i];
     %>
-    <div class="line <%= line.type %> <%= line.translates.length > 0 ? '' : 'need' %>" data-hash="<%= line.hash %>">
+    <div class="line <%= line.type %> <%= line.translates.length > 0 ? 'translated' : 'need' %>" data-hash="<%= line.hash %>">
       <div class="origin">
+        <h2>原文</h2>
         <pre><%= line.content %></pre>
       </div>
-      <div class="other">
       <% for (var j = 0; j < line.translates.length; j++) {
         var t = line.translates[j];
       %>
-        <div class="item" data-id="<%= t.id %>">
-          <span class="info"><%= users[t.user_id].nickname %> 于 <%= formatTimestamp(t.timestamp) %> 翻译（<%= t.vote %>赞）:</span>
-          <button class="btn btn-xs btn-info vote-line"><i class="glyphicon glyphicon-thumbs-up"></i>赞</button>
-          <button class="btn btn-xs btn-info edit-line"><i class="glyphicon glyphicon-edit"></i>编辑</button>
-          <pre><%= t.content %></pre>
-        </div>
-      <% } %>
+      <div class="other" data-id="<%= t.id %>">
+        <h2 class="info"><%= users[t.user_id].nickname %> 翻译于 <%= formatTimestamp(t.timestamp) %></h2>
+        <pre><%= t.content %></pre>
+        <button class="btn btn-xs btn-info vote-line"><i class="glyphicon glyphicon-thumbs-up"></i> 赞 (<%= t.vote %>)</button>
+        <button class="btn btn-xs btn-info edit-line"><i class="glyphicon glyphicon-edit"></i> 编辑</button>
       </div>
+      <% } %>
       <div class="translate">
         <textarea rows="<%= line.rows %>"><%= line.current ? line.current.content : line.content %></textarea>
-      </div>
-      <div class="op">
-        <button class="btn btn-xs btn-primary save-line"><i class="glyphicon glyphicon-ok"></i>保存</button>
+        <button class="btn btn-xs btn-primary save-line"><i class="glyphicon glyphicon-ok"></i> 保存</button>
         <span class="status"></span>
       </div>
     </div>
@@ -142,7 +154,7 @@ $('.save-line').click(function () {
   var hash = $line.data('hash');
 
   function setStatus (style, text) {
-    $line.find('.op .status')
+    $line.find('.status')
       .removeClass('alert-info')
       .removeClass('alert-success')
       .removeClass('alert-danger')
@@ -185,10 +197,32 @@ $('.translate textarea').blur(function () {
   $line.find('.save-line').click();
 });
 
+// Tab自动跳到下一段落
+$(document).on('keydown', '.translate textarea', function (evt) {
+  if (evt.keyCode == 9) {
+    evt.preventDefault()
+
+    var p = $(this).parents('.line')
+    var l = $('.lines').hasClass('need-only')
+          ? (evt.shiftKey ? p.prevAll('.need').first() : p.nextAll('.need').first())
+          : (evt.shiftKey ? p.prev() : p.next())
+    var t = l.find('.translate textarea')
+
+    t.focus()
+    t.select()
+  }
+})
+
+$(document).on('ready', function () {
+  var t = $('.translate textarea').first()
+  t.focus()
+  t.select()
+})
+
 // 编辑
 $('.edit-line').click(function () {
   var $me = $(this);
-  var $item = $me.closest('.item');
+  var $item = $me.closest('.other');
   var $line = $me.closest('.line');
   var content = $item.find('pre').text();
   $line.find('.translate textarea').val(content);
@@ -209,11 +243,10 @@ $('.vote-line').click(function () {
 $('#btn-toggle').click(function () {
   var $me = $(this);
   if ($me.text().indexOf('仅') !== -1) {
-    $('.line').hide();
-    $('.line.need').show();
+    $('.lines').addClass('need-only');
     $me.text('显示所有段落');
   } else {
-    $('.line').show();
+    $('.lines').removeClass('need-only');
     $me.text('仅显示未翻译的段落');
   }
 });
