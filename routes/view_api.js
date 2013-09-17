@@ -27,11 +27,14 @@ module.exports = function (app) {
           res.writeHead(200, {'content-type': 'text/html'});
           res.end(html);
         });
-      } else {
+      } else if (type === 'json') {
         api2JSON(content, filename, function (err, data) {
           if (err) return next(err);
           res.json(data);
         })
+      } else {
+        res.writeHead(200, {'content-type': 'text/plain'});
+        res.end(content);
       }
     });
   });
