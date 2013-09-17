@@ -231,7 +231,7 @@ $('.edit-line').click(function () {
 // 赞
 $('.vote-line').click(function () {
   var $me = $(this);
-  var $item = $me.closest('.item');
+  var $item = $me.closest('.other');
   var id = $item.data('id');
   $.post('/translate/vote', {id: id}, function (d) {
     if (d.error) return alert(d.error);
