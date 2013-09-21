@@ -16,7 +16,7 @@ function readFile (name, callback) {
   var where = '`file`=' + db.escape(name) +
               ' AND `version`=' + db.escape(config.api.version);
   db.select('origin_api', '*', where, 'ORDER BY `id` ASC', function (err, lines) {
-    if (err) return next(err);
+    if (err) return callback(err);
 
     // 查找出最好的翻译
     async.eachSeries(lines, function (line, next) {

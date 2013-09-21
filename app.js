@@ -36,7 +36,7 @@ app.locals.formatTimestamp = function (t) {
     return v < 10 ? '0' + v : v;
   }
   var d = new Date(t * 1000);
-  return d.getFullYear() + '/' + d.getMonth() + '/' + d.getDate() + ' ' +
+  return d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + ' ' +
          d.getHours() + ':' + n2(d.getMinutes());
 };
 
