@@ -31,7 +31,7 @@ function readFile (name, callback) {
 
     }, function (err) {
       if (err) return callback(err);
-      
+
       // 生成markdown文件
       lines = lines.map(function (line) {
         if (line.translate) {
@@ -67,7 +67,7 @@ function readAPIFile (name, callback) {
 function processIncludes (content, callback) {
   var includeExpr = /^@include\s+([A-Za-z0-9-_]+)(?:\.)?([a-zA-Z]*)$/gmi;
   var includes = content.match(includeExpr);
-  if (includes === null) return cb(null, content);
+  if (includes === null) return callback(null, content);
 
   includes = includes.map(function(include) {
     var fname = include.replace(/^@include\s+/, '');
