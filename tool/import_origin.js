@@ -7,6 +7,7 @@ var fs = require('fs');
 var async = require('async');
 var config = require('../config');
 var utils = require('../routes/utils');
+var standardLineBreak = require('./utils').standardLineBreak;
 var db = config.mysql;
 
 var ORIGIN_API_PATH = path.resolve(__dirname, '../origin/api');
@@ -34,6 +35,9 @@ db.delete('origin_api', '`version`=' + db.escape(VERSION), function (err) {
       console.log('  [%d块]', plist.length);
 
       async.eachSeries(plist, function (p, next) {
+
+        // 统一换行符
+        p = standardLineBreak(p);
 
         var lines = p.split(/\n/);
         var type = '';
