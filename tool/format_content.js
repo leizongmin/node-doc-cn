@@ -1,6 +1,5 @@
 /**
- * 格式化英文内容，统一换行符，重新生产hash值
- * 在执行之前需要停止在线翻译
+ * 格式化英文内容，统一换行符，去掉首行的空行，重新生成hash值
  */
 
 var async = require('async');
@@ -17,7 +16,14 @@ db.select('origin_api', '*', '1', function (err, list) {
 
   async.eachSeries(list, function (item, next) {
 
+    // 统一换行符
     var content = utils.standardLineBreak(item.content);
+    var lines = content.split(/\n/);
+    if (lines[0].trim() === '') {
+      lines.shift();
+      content = lines.join('\n');
+    }
+
     var hash = utils.md5(content).toLowerCase();
     if (hash === item.hash) return next();
 
