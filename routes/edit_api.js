@@ -98,9 +98,16 @@ module.exports = function (app) {
         if (i !== j) return formatError('标题前面应该有' + i + '个#后面再跟一个空格');
       } else if (origin.type === 'code') {
         var lines = content.split(/\r?\n/);
-        for (var i = 0; i < lines.length; i++) {
-          if (lines[i].substr(0, 4) !== '    ') {
-            return formatError('（第' + (i + 1) + '行）代码块的每一行应该以4个空格开头');
+        var originLines = origin.content.split(/\r?\n/);
+        if (originLines[0].substr(0, 3) === '```') {
+          if (!(lines[0].substr(0, 3) === '```' && lines[lines.length - 1].trimRight() === '```')) {
+            return formatError('代码块的首行和尾行必须是```');
+          }
+        } else {
+          for (var i = 0; i < lines.length; i++) {
+            if (lines[i].substr(0, 4) !== '    ') {
+              return formatError('（第' + (i + 1) + '行）代码块的每一行应该以4个空格开头');
+            }
           }
         }
       }
