@@ -35,8 +35,14 @@ function readFile (name, callback) {
       // 生成markdown文件
       lines = lines.map(function (line) {
         if (line.translate) {
-          return line.translate.content;
+          // 已有翻译
+          var content = line.translate.content;
+          if (name !== '_toc' &&line.type === 'paragraph') {
+            content = line.content + '\n\n' + content;
+          }
+          return content;
         } else {
+          // 暂时还没有翻译
           return line.content;
         }
       });
