@@ -34,7 +34,8 @@ db.delete('origin_api', '`version`=' + db.escape(VERSION), function (err) {
       var plist = c.split(/\r?\n\r?\n/);
       console.log('  [%d块]', plist.length);
 
-      async.eachSeries(plist, function (p, next) {
+      // 重新整理内容，判断数据类型
+      plist = plist.map(function (p) {
 
         // 统一换行符
         p = standardLineBreak(p);
@@ -42,7 +43,7 @@ db.delete('origin_api', '`version`=' + db.escape(VERSION), function (err) {
         var lines = p.split(/\n/);
         var type = '';
         if (lines.length === 1) {
-          if (/^#\s+.+/.test(lines[0])) {
+          if (/^#+\s+.+/.test(lines[0])) {
             type = 'title';
           } else if (/<!--([^=]+)=([^\-]+)-->/.test(lines[0])) {
             type = 'meta';
@@ -62,13 +63,46 @@ db.delete('origin_api', '`version`=' + db.escape(VERSION), function (err) {
               break;
             }
           }
+          // 首行是``` 以及尾行是 ``` 的也是代码块
+          if (type !== 'code') {
+            if (lines[0].substr(0, 3) === '```' || lines[lines.length - 1].substr(-3) === '```') {
+              type = 'code';
+            }
+          }
         }
 
-        console.log('    %s: %d行', type, lines.length);
+        return {content: p, type: type};
+      });
+
+      // 合并相邻的代码块
+      // 找出相邻的代码块
+      for (var i = 0; i < plist.length; i++) {
+        if (plist[i].type === 'code') {
+          var c = 1;
+          while (true) {
+            if (plist[i + c].type === 'code') {
+              c++;
+            } else {
+              break;
+            }
+          }
+          if (c > 1) {
+            var newContent = standardLineBreak(plist.slice(i, i + c).map(function (item) {
+              return item.content;
+            }).join('\n\n'));
+            plist[i].content = newContent;
+            plist.splice(i, c - 1);
+          }
+        }
+      }
+
+      async.eachSeries(plist, function (item, next) {
+
+        console.log('保存内容: [%s] %s', item.type, item.content.substr(0, 20));
         db.insert('origin_api', {
-          hash:     utils.md5(p),
-          type:     type,
-          content:  p,
+          hash:     utils.md5(item.content),
+          type:     item.type,
+          content:  item.content,
           file:     n.slice(0, -9),
           version:  VERSION
         }, function (err) {
