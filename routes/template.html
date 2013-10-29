@@ -89,10 +89,23 @@
 <script>
 $('.translate-section').each(function () {
   var html = '<div class="op">' +
-               '<button class="btn btn-xs btn-info">显示原文</button>' +
+               '<button class="show-origin">显示原文</button>' +
                '<button class="btn btn-xs btn-info">其他翻译</button>' +
                '<button class="btn btn-xs btn-info">纠错</button>' +
               '</div>';
   $(this).prepend(html);
+});
+
+// 显示原文
+$('.translate-section').delegate('.show-origin', 'click', function () {
+  var $section = $(this).closest('.translate-section');
+  var hash = $section.data('hash');
+  $.get('/translate/get/origin', {hash: hash}, function (d) {
+    if (d.error) return alert(d.error);
+
+    $section.find('.origin').remove();
+    $section.append('<div class="origin">' + d.html + '</div>');
+    highlight(undefined, undefined, 'code');
+  });
 });
 </script>

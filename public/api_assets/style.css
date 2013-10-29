@@ -599,3 +599,6 @@ a.anchor {
   color: #fff;
   border-color: #2d6ca2;
 }
+.translate-section .origin {
+  background-color: #eee;
+}

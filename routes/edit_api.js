@@ -170,4 +170,19 @@ module.exports = function (app) {
     });
   });
 
+  // 取指定段落的原文
+  app.get('/translate/get/origin', function (req, res, next) {
+    var hash = req.query.hash;
+    if (!hash) return res.json({error: 'hash参数有误'});
+
+    var where = '`hash`=' + db.escape(hash);
+    db.selectOne('origin_api', '*', where, function (err, ret) {
+      if (err) return res.json({error: err.toString()});
+      if (!ret) return res.json({error: '该段落不存在'});
+
+      ret.html = utils.markdownToHTML(ret.content);
+      res.json(ret);
+    });
+  });
+
 };

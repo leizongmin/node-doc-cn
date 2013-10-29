@@ -2,6 +2,7 @@ var path = require('path');
 var fs = require('fs');
 var crypto = require('crypto');
 var async = require('async');
+var marked = require('marked');
 var config = require('../config');
 var db = config.mysql;
 var utils = module.exports;
@@ -194,4 +195,14 @@ exports.randomString = function (size) {
     size--;
   }
   return new_pass;
+};
+
+/**
+ * 将Markdown转换为HTML
+ *
+ * @param {String} content
+ * @return {String}
+ */
+exports.markdownToHTML = function (content) {
+  return marked(content);
 };
