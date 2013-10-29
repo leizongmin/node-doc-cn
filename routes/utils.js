@@ -12,7 +12,9 @@ var API_PATH = path.resolve(__dirname, '../api');
 
 
 // 从数据库中读取出所有翻译结果，并生成文件内容
-function readFile (name, callback) {
+function readFile (name, callback, originOnly) {
+  originOnly = !!originOnly;
+
   var where = '`file`=' + db.escape(name) +
               ' AND `version`=' + db.escape(config.api.version);
   db.select('origin_api', '*', where, 'ORDER BY `id` ASC', function (err, lines) {
@@ -34,17 +36,20 @@ function readFile (name, callback) {
 
       // 生成markdown文件
       lines = lines.map(function (line) {
-        if (line.translate) {
+        if (!originOnly && line.translate) {
           // 已有翻译
           var content = line.translate.content;
-          if (name !== '_toc' &&line.type === 'paragraph') {
-            content = line.content + '\n\n' + content;
+          if (name !== '_toc' && line.type === 'paragraph') {
+            content = content;
           }
-          return content;
         } else {
           // 暂时还没有翻译
-          return line.content;
+          var content = line.content;
         }
+        if (line.type !== 'meta') {
+          content = '<!-- section:' + line.hash + ' -->\n\n' + content + '\n\n<!-- endsection -->';
+        }
+        return content;
       });
 
       callback(null, lines.join('\n\n'));
@@ -53,7 +58,7 @@ function readFile (name, callback) {
 };
 
 // 读取文件内容
-function readAPIFile (name, callback) {
+function readAPIFile (name, callback, originOnly) {
   if (name === 'index') name = '_toc';
   if (name === 'all') {
     readFile(name, function (err, content) {
@@ -61,11 +66,11 @@ function readAPIFile (name, callback) {
       processIncludes(content, function (err, content) {
         callback(err, content, name + '.markdown');
       });
-    });
+    }, originOnly);
   } else {
     readFile(name, function (err, content) {
       callback(err, content, name + '.markdown');
-    });
+    }, originOnly);
   }
 }
 

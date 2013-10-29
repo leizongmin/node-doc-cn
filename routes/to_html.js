@@ -26,10 +26,11 @@ var xss = require('xss');
 
 module.exports = toHTML;
 
+
 // 配置XSS
 xss._onIgnoreTag = xss.onIgnoreTag;
 xss.onIgnoreTag = function (tag, html, options) {
-  // 不过滤 <!-- xxx --> 因为这些在生产HTML时有用
+  // 不过滤 <!-- xxx --> 因为这些在生成HTML时有用
   if (/<!--.*-->*/.test(html.trim())) {
     return html;
   } else {
@@ -67,8 +68,14 @@ function render(lexed, filename, template, cb) {
     // content has to be the last thing we do with
     // the lexed tokens, because it's destructive.
     content = marked.parser(lexed);
+
     // XSS过滤
     content = xss(content);
+
+    // 中英文对照
+    content = content.replace(/<!--\s*section:([a-zA-Z0-9]{32})\s*-->/g, '<div class="translate-section" data-hash="$1">');
+    content = content.replace(/<!--\s*endsection\s*-->/g, '</div>');
+
     template = template.replace(/__CONTENT__/g, content);
 
     cb(null, template);

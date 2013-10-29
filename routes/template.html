@@ -69,21 +69,11 @@
   <script src="/public/api_assets/sh_main.js"></script>
   <script src="/public/api_assets/sh_javascript.min.js"></script>
   <script>highlight(undefined, undefined, 'pre');</script>
-  <!--
-  <script>
-    window._gaq = [['_setAccount', 'UA-10874194-2'], ['_trackPageview']];
-    (function(d, t) {
-      var g = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      g.src = '//www.google-analytics.com/ga.js';
-      s.parentNode.insertBefore(g, s);
-    }(document, 'script'));
-  </script>
-  -->
 </body>
 </html>
-<script type="text/javascript">
 
+<!-- google analytics -->
+<script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-26599868-1']);
   _gaq.push(['_trackPageview']);
@@ -93,5 +83,16 @@
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
+</script>
 
+<script src="/public/js/jquery.js"></script>
+<script>
+$('.translate-section').each(function () {
+  var html = '<div class="op">' +
+               '<button class="btn btn-xs btn-info">显示原文</button>' +
+               '<button class="btn btn-xs btn-info">其他翻译</button>' +
+               '<button class="btn btn-xs btn-info">纠错</button>' +
+              '</div>';
+  $(this).prepend(html);
+});
 </script>

@@ -567,3 +567,35 @@ a.anchor {
   clear: both;
   visibility: hidden;
 }
+
+/* 翻译段落 */
+.translate-section {
+  border: 1px solid #eee;
+  margin: 10px 0;
+}
+.translate-section:hover {
+  border-color: #ddd;
+}
+.translate-section .op {
+  text-align: right;
+  height: 26px;
+}
+.translate-section .op button {
+
+}
+.translate-section:hover .op button {
+  display: initial;
+}
+.translate-section button {
+  font-size: 12px;
+  border: 1px solid #aaa;
+  background-color: #F8F8F8;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #666;
+}
+.translate-section button:hover {
+  background-color: #2d6ca2;
+  color: #fff;
+  border-color: #2d6ca2;
+}
