@@ -88,14 +88,14 @@ module.exports = function (app) {
       if (!origin) return res.json({error: '要翻译的条目不存在'});
 
       function formatError (err) {
-        res.json({error: '翻译时请保留原来的格式：' + err})
+        res.json({error: '翻译时请保留原来的格式：' + err});
       }
 
       // 检查格式是否一致
       if (origin.type === 'title') {
-        var i = origin.content.indexOf(' ');
+        var k = origin.content.indexOf(' ');
         var j = content.indexOf(' ');
-        if (i !== j) return formatError('标题前面应该有' + i + '个#后面再跟一个空格');
+        if (k !== j) return formatError('标题前面应该有' + k + '个#后面再跟一个空格');
       } else if (origin.type === 'code') {
         var lines = content.split(/\r?\n/);
         var originLines = origin.content.split(/\r?\n/);
@@ -145,7 +145,7 @@ module.exports = function (app) {
 
   app.post('/translate/vote', check_signin, function (req, res, next) {
     var id = req.body.id;
-    if (!(id > 0)) return res.json({error: 'id参数有误'});
+    if (id <= 0) return res.json({error: 'id参数有误'});
 
     var user_id = req.signinUser.id;
     var where = '`translate_id`=' + db.escape(id) + ' AND `user_id`=' + db.escape(user_id);

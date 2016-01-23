@@ -37,6 +37,10 @@ function readFile (name, callback, originOnly) {
 
       // 生成markdown文件
       lines = lines.map(function (line) {
+        /*
+         * 这里content定义的有些奇怪，先不改
+         */
+        /* jshint ignore:start */
         if (!originOnly && line.translate) {
           // 已有翻译
           var content = line.translate.content;
@@ -51,12 +55,13 @@ function readFile (name, callback, originOnly) {
           content = '<!-- section:' + line.hash + ' -->\n\n' + content + '\n\n<!-- endsection -->';
         }
         return content;
+        /* jshint ignore:end */
       });
 
       callback(null, lines.join('\n\n'));
     });
   });
-};
+}
 
 // 读取文件内容
 function readAPIFile (name, callback, originOnly) {
