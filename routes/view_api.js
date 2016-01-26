@@ -31,7 +31,7 @@ module.exports = function (app) {
         api2JSON(content, filename, function (err, data) {
           if (err) return next(err);
           res.json(data);
-        })
+        });
       } else {
         res.writeHead(200, {'content-type': 'text/plain'});
         res.end(content);
@@ -79,7 +79,7 @@ module.exports = function (app) {
               userIds[uid] = true;
               // 记录用户翻译的数量
               if (uid in users) {
-                users[uid]++
+                users[uid]++;
               } else {
                 users[uid] = 1;
               }
@@ -103,10 +103,10 @@ module.exports = function (app) {
 
           // 用户按照翻译数量排序
           var userList = [];
-          for (var i in users) {
+          for (var j in users) {
             userList.push({
-              user_id: i,
-              count:   users[i]
+              user_id: j,
+              count:   users[j]
             });
           }
           userList.sort(function (a, b) {

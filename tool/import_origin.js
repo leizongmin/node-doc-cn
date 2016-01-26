@@ -96,20 +96,20 @@ db.delete('origin_api', '`version`=' + db.escape(VERSION), function (err) {
       // 找出相邻的代码块
       for (var i = 0; i < plist.length; i++) {
         if (plist[i].type === 'code') {
-          var c = 1;
+          var count = 1;
           while (true) {
-            if (plist[i + c] && plist[i + c].type === 'code') {
-              c++;
+            if (plist[i + count] && plist[i + count].type === 'code') {
+              count++;
             } else {
               break;
             }
           }
-          if (c > 1) {
-            var newContent = standardLineBreak(plist.slice(i, i + c).map(function (item) {
+          if (count > 1) {
+            var newContent = standardLineBreak(plist.slice(i, i + count).map(function (item) {
               return item.content;
             }).join('\n\n'));
             plist[i].content = newContent;
-            plist.splice(i, c - 1);
+            plist.splice(i, count - 1);
           }
         }
       }

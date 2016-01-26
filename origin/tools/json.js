@@ -98,7 +98,7 @@ function doJSON(input, filename, cb) {
     //
     // If one of these isnt' found, then anything that comes between
     // here and the next heading should be parsed as the desc.
-    var stability
+    var stability;
     if (state === 'AFTERHEADING') {
       if (type === 'code' &&
           (stability = text.match(/^Stability: ([0-5])(?:\s*-\s*)?(.*)$/))) {
@@ -146,7 +146,7 @@ function doJSON(input, filename, cb) {
     finishSection(current, stack[stack.length - 1]);
   }
 
-  return cb(null, root)
+  return cb(null, root);
 }
 
 
@@ -203,14 +203,13 @@ function processList(section) {
     var type = tok.type;
     if (type === 'space') return;
     if (type === 'list_item_start') {
+      var n = {};
       if (!current) {
-        var n = {};
         values.push(n);
         current = n;
       } else {
         current.options = current.options || [];
         stack.push(current);
-        var n = {};
         current.options.push(n);
         current = n;
       }
@@ -252,7 +251,7 @@ function processList(section) {
       // each item is an argument, unless the name is 'return',
       // in which case it's the return value.
       section.signatures = section.signatures || [];
-      var sig = {}
+      var sig = {};
       section.signatures.push(sig);
       sig.params = values.filter(function(v) {
         if (v.name === 'return') {
@@ -294,7 +293,7 @@ function parseSignature(text, sig) {
   params = params[1];
   // the ] is irrelevant. [ indicates optionalness.
   params = params.replace(/\]/g, '');
-  params = params.split(/,/)
+  params = params.split(/,/);
   params.forEach(function(p, i, _) {
     p = p.trim();
     if (!p) return;
@@ -495,15 +494,16 @@ function deepCopy(src, dest) {
 
 function deepCopy_(src) {
   if (!src) return src;
+  var c;
   if (Array.isArray(src)) {
-    var c = new Array(src.length);
+    c = new Array(src.length);
     src.forEach(function(v, i) {
       c[i] = deepCopy_(v);
     });
     return c;
   }
   if (typeof src === 'object') {
-    var c = {};
+    c = {};
     Object.keys(src).forEach(function(k) {
       c[k] = deepCopy_(src[k]);
     });

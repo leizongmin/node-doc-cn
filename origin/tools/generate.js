@@ -40,7 +40,7 @@ args.forEach(function (arg) {
   } else if (arg.match(/^\-\-template=/)) {
     template = arg.replace(/^\-\-template=/, '');
   }
-})
+});
 
 
 if (!inputFile) {

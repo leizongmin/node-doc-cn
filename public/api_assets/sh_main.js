@@ -520,7 +520,7 @@ function highlight(prefix, suffix, tag) {
     for (var j = 0; j < htmlClasses.length; j++) {
       var htmlClass = htmlClasses[j].toLowerCase();
       if (htmlClass === 'sh_none') {
-        donthighlight = true
+        donthighlight = true;
         continue;
       }
       if (htmlClass.substr(0, 3) === 'sh_') {
@@ -538,7 +538,7 @@ function highlight(prefix, suffix, tag) {
         break;
       }
     }
-    if (highlighted === false && donthighlight == false) {
+    if (highlighted === false && donthighlight === false) {
       sh_highlightElement(element, sh_languages["javascript"]);
     }
   }

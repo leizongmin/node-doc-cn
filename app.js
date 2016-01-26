@@ -4,7 +4,7 @@
  */
 
 var express = require('express');
-var http = require('http')
+var http = require('http');
 var path = require('path');
 var ejs = require('ejs');
 var config = require('./config');
