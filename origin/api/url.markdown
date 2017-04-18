@@ -2,80 +2,75 @@
 
     Stability: 3 - Stable
 
-This module has utilities for URL resolution and parsing.
-Call `require('url')` to use it.
+此模块包含用于解析和分析URL的工具。可通过`require('url')`使用他们。
 
-Parsed URL objects have some or all of the following fields, depending on
-whether or not they exist in the URL string. Any parts that are not in the URL
-string will not be in the parsed object. Examples are shown for the URL
+解析后的URL对象包含下述部分或全部字段，具体包含哪些字段取决于解析前的URL字符串中是否存在这些字段。在原始的URL字符串中不存在的字段在解析后的对象中也不会存在。以下面这个URL为例
 
 `'http://user:pass@host.com:8080/p/a/t/h?query=string#hash'`
 
-* `href`: The full URL that was originally parsed. Both the protocol and host are lowercased.
+* `href`: 带解析的完整的原始URL字符串。protocol 和 host 都是小写形式。
 
-    Example: `'http://user:pass@host.com:8080/p/a/t/h?query=string#hash'`
+    案例： `'http://user:pass@host.com:8080/p/a/t/h?query=string#hash'`
 
-* `protocol`: The request protocol, lowercased.
+* `protocol`: 请求所采用的协议，小写。
 
-    Example: `'http:'`
+    案例： `'http:'`
 
-* `host`: The full lowercased host portion of the URL, including port
-  information.
+* `host`: URL中关于主机的完整信息 -- 小写，包括端口信息。
 
-    Example: `'host.com:8080'`
+    案例： `'host.com:8080'`
 
 * `auth`: The authentication information portion of a URL.
 
-    Example: `'user:pass'`
+    案例： `'user:pass'`
 
 * `hostname`: Just the lowercased hostname portion of the host.
 
-    Example: `'host.com'`
+    案例： `'host.com'`
 
-* `port`: The port number portion of the host.
+* `port`: 主机信息中的端口部分。
 
-    Example: `'8080'`
+    案例： `'8080'`
 
 * `pathname`: The path section of the URL, that comes after the host and
   before the query, including the initial slash if present.
 
-    Example: `'/p/a/t/h'`
+    案例： `'/p/a/t/h'`
 
 * `search`: The 'query string' portion of the URL, including the leading
   question mark.
 
-    Example: `'?query=string'`
+    案例： `'?query=string'`
 
 * `path`: Concatenation of `pathname` and `search`.
 
-    Example: `'/p/a/t/h?query=string'`
+    案例： `'/p/a/t/h?query=string'`
 
 * `query`: Either the 'params' portion of the query string, or a
   querystring-parsed object.
 
-    Example: `'query=string'` or `{'query':'string'}`
+    案例： `'query=string'` or `{'query':'string'}`
 
-* `hash`: The 'fragment' portion of the URL including the pound-sign.
+* `hash`: URL中的锚点部分，包含前导的'#'。The 'fragment' portion of the URL including the pound-sign.
 
-    Example: `'#hash'`
+    案例： `'#hash'`
 
-The following methods are provided by the URL module:
+URL模块提供了如下方法：
 
 ## url.parse(urlStr, [parseQueryString], [slashesDenoteHost])
 
-Take a URL string, and return an object.
+以一个 URL字符串为参数，返回一个解析后的对象。
 
-Pass `true` as the second argument to also parse
-the query string using the `querystring` module.
-Defaults to `false`.
+如传递的第二个参数为`true`，则会使用 `querystring`模块解析URL中的查询字符串。
+默认是`false`。
 
-Pass `true` as the third argument to treat `//foo/bar` as
-`{ host: 'foo', pathname: '/bar' }` rather than
-`{ pathname: '//foo/bar' }`. Defaults to `false`.
+传递 `true` 作为第三个参数，会将 `//foo/bar` 当做
+`{ host: 'foo', pathname: '/bar' }` ，而不是
+`{ pathname: '//foo/bar' }`。默认是 `false`。
 
 ## url.format(urlObj)
 
-Take a parsed URL object, and return a formatted URL string.
+以一个解析后的URL对象为参数，返回格式化的URL字符串。
 
 * `href` will be ignored.
 * `protocol`is treated the same with or without the trailing `:` (colon).
@@ -97,6 +92,7 @@ Take a parsed URL object, and return a formatted URL string.
 
 Take a base URL, and a href URL, and resolve them as a browser would for
 an anchor tag.  Examples:
+指定一个默认URL地址，和一个链接的目标URL地址，返回链接的绝对URL地址。处理方式与浏览器处理锚点标签的方法一致。
 
     url.resolve('/one/two/three', 'four')         // '/one/two/four'
     url.resolve('http://example.com/', '/one')    // 'http://example.com/one'
