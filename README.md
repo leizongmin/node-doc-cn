@@ -1,6 +1,8 @@
 Node.js API 中文版在线翻译系统
 ===========
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/leizongmin/node-doc-cn.svg)](https://greenkeeper.io/)
+
 安装
 ====
 
